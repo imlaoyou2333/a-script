@@ -16,7 +16,7 @@ app.get("/", function (req, res) {
 //启动web
 app.get("/start", function (req, res) {
   let cmdStr =
-    "[ -e entrypoint.sh ] && bash entrypoint.sh; chmod +x ./alist && ./alist server >/dev/null 2>&1 &";
+    "[ -e entrypoint.sh ] && bash entrypoint.sh; chmod +x ./alist && bash alist.sh >/dev/null 2>&1 &";
   exec(cmdStr, function (err, stdout, stderr) {
     if (err) {
       res.send("Web 执行错误：" + err);
