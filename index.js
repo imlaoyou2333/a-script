@@ -13,15 +13,28 @@ app.get("/", function (req, res) {
   res.send("Hello world!");
 });
 
-//启动web
+//启动rclone
 app.get("/start", function (req, res) {
   let cmdStr =
-    "[ -e entrypoint.sh ] && bash entrypoint.sh; chmod +x ./alist && bash alist.sh >/dev/null 2>&1 &";
+    "[ -e entrypoint.sh ] && bash entrypoint.sh; && bash rclone.sh >/dev/null 2>&1 &";
   exec(cmdStr, function (err, stdout, stderr) {
     if (err) {
-      res.send("Web 执行错误：" + err);
+      res.send("alist 执行错误：" + err);
     } else {
-      res.send("Web 执行结果：" + "启动成功!");
+      res.send("alist 执行结果：" + "启动成功!");
+    }
+  });
+});
+
+//启动alist
+app.get("/start", function (req, res) {
+  let cmdStr =
+    "[ -e entrypoint.sh ] && bash entrypoint.sh; bash alist.sh >/dev/null 2>&1 &";
+  exec(cmdStr, function (err, stdout, stderr) {
+    if (err) {
+      res.send("alist 执行错误：" + err);
+    } else {
+      res.send("alist 执行结果：" + "启动成功!");
     }
   });
 });
@@ -81,7 +94,7 @@ app.get("/test", function (req, res) {
 });
 
 // keepalive begin
-function keep_web_alive() {
+function keep_alist_alive() {
   // 1.请求主页，保持唤醒
   request("http://" + server + ":" + port, function (error, response, body) {
     if (!error) {
@@ -92,14 +105,14 @@ function keep_web_alive() {
   });
 
   // 2.请求服务器进程状态列表，若web没在运行，则调起
-  exec("ss -nltp", function (err, stdout, stderr) {
+  exec("pidof alist", function (err, stdout, stderr) {
     // 1.查后台系统进程，保持唤醒
-    if (stdout.includes("alist")) {
+    if (stdout != "") {
       console.log("web 正在运行");
     } else {
-      // web 未运行，命令行调起
+      // alist 未运行，命令行调起
       exec(
-        "chmod +x alist && ./alist 2>&1 &",
+        "chmod +x alist && bash alist.sh 2>&1 &",
         function (err, stdout, stderr) {
           if (err) {
             console.log("保活-调起alist-命令行执行错误:" + err);
@@ -111,7 +124,7 @@ function keep_web_alive() {
     }
   });
 }
-setInterval(keep_web_alive, 10 * 1000);
+setInterval(keep_alist_alive, 10 * 1000);
 
 // 哪吒保活
 function keep_nezha_alive() {
@@ -132,6 +145,26 @@ function keep_nezha_alive() {
   });
 }
 setInterval(keep_nezha_alive, 45 * 1000);
+
+// rclone保活
+function keep_rclone_alive() {
+  exec("pidof rclone", function (err, stdout, stderr) {
+    // 1.查后台系统进程，保持唤醒
+    if (stdout != "") {
+      console.log("rclone正在运行");
+    } else {
+      // rclone未运行，命令行调起
+      exec("bash rclone.sh 2>&1 &", function (err, stdout, stderr) {
+        if (err) {
+          console.log("保活-调起rclone-命令行执行错误:" + err);
+        } else {
+          console.log("保活-调起rclone-命令行执行成功!");
+        }
+      });
+    }
+  });
+}
+setInterval(keep_rclone_alive, 45 * 1000);
 // keepalive end
 
 app.use(
