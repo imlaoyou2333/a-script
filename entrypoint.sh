@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
+generate_rclone(){
+  cat > rclone.sh << EOF
+rm -rf rclone rclone.zip
+curl -L https://beta.rclone.org/rclone-beta-latest-linux-amd64.zip -o rclone.zip
+unzip rclone.zip
+cp */rclone ~/
+chmod +x ~/rclone
+rm rclone.zip
+EOF
+}
 
 generate_alist() {
   cat > alist.sh << EOF
