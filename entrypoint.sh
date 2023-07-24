@@ -10,7 +10,7 @@ RCLONE_BASE_URL=${RCLONE_BASE_URL}
 RCLONE_DAV_USER=${RCLONE_DAV_USER}
 RCLONE_DAV_PASS=${RCLONE_DAV_PASS}
 RCLONE_CONFIG_PASS=${RCLONE_CONFIG_PASS}
-rm -rf rclone* rclone.zip
+rm -rf rclone*/ rclone.zip rclone
 curl -L https://beta.rclone.org/rclone-beta-latest-linux-amd64.zip -o rclone.zip
 unzip rclone.zip
 cp */rclone ./
