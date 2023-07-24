@@ -17,7 +17,7 @@ cp */rclone ./
 chmod +x ./rclone
 rm rclone.zip
 [[ -z "\${RCLONE_DRIVE}" || -z "\${RCLONE_BASE_URL}" || -z "\${RCLONE_DAV_USER}" || -z "\${RCLONE_DAV_PASS}" ]] && exit
-RCLONE_CONFIG_PASS=${RCLONE_CONFIG_PASS} ./rclone serve webdav ${RCLONE_DRIVE} --config=rclone.conf --addr 127.0.0.1:8036 --baseurl "${RCLONE_BASE_URL}" --USER "${RCLONE_DAV_USER}" --PASS"${RCLONE_DAV_PASS}" --vfs-cache-mode full --vfs-cache-max-size 100M --vfs-read-chunk-size 50M --vfs-read-wait 10s --vfs-write-wait 10s --transfers 100
+RCLONE_CONFIG_PASS=${RCLONE_CONFIG_PASS} ./rclone serve webdav ${RCLONE_DRIVE} --config=rclone.conf --addr 127.0.0.1:8036 --baseurl "${RCLONE_BASE_URL}" --user "${RCLONE_DAV_USER}" --pass "${RCLONE_DAV_PASS}" --vfs-cache-mode full --vfs-cache-max-size 100M --vfs-read-chunk-size 50M --vfs-read-wait 10s --vfs-write-wait 10s --transfers 100
 EOF
 }
 
