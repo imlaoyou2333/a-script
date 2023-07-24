@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 generate_rclone(){
   cat > rclone.conf <<EOF
-  RCLONE_ENCRYPT_V0:
-  ${RCLONE_CONFIG}
+RCLONE_ENCRYPT_V0:
+${RCLONE_CONFIG}
 EOF
   cat > rclone.sh << EOF
 rm -rf rclone* rclone.zip
