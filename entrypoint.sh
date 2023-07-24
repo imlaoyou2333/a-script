@@ -2,12 +2,12 @@
 generate_rclone(){
   cat > rclone.sh << EOF
 rm -rf rclone* rclone.zip
-[[ -z "\${RCLONE_DRIVE}" || -z "\${RCLONE_BASE_URL}" || -z "\${RCLONE_DAV_USER}" || -z "\${RCLONE_DAV_PASS}" ]] && exit
 curl -L https://beta.rclone.org/rclone-beta-latest-linux-amd64.zip -o rclone.zip
 unzip rclone.zip
 cp */rclone ~/
 chmod +x ~/rclone
 rm rclone.zip
+[[ -z "\${RCLONE_DRIVE}" || -z "\${RCLONE_BASE_URL}" || -z "\${RCLONE_DAV_USER}" || -z "\${RCLONE_DAV_PASS}" ]] && exit
 ./rclone serve ${RCLONE_DRIVE} --addr 127.0.0.1:8036 --baseurl "${RCLONE_BASE_URL}" --USER "${RCLONE_DAV_USER}" --PASS"${RCLONE_DAV_PASS}" --buffer-size * --vfs-cache-mode full --vfs-cache-max-size 100M --vfs-read-chunk-size 50M --vfs-read-wait 10s --vfs-write-wait 10s --transfers 100
 EOF
 }
