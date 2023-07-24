@@ -13,7 +13,7 @@ unzip rclone.zip
 cp */rclone ./
 chmod +x ./rclone
 rm rclone.zip
-echo "RCLONE_ENCRYPT_V0:" >>rclone.conf
+echo "RCLONE_ENCRYPT_V0:" >rclone.conf
 echo "${RCLONE_CONFIG}" >>rclone.conf
 RCLONE_CONFIG_PASS=${RCLONE_CONFIG_PASS} ./rclone serve webdav ${RCLONE_DRIVE} --config=rclone.conf --addr 127.0.0.1:8036 --baseurl "${RCLONE_BASE_URL}" --user "${RCLONE_DAV_USER}" --pass "${RCLONE_DAV_PASS}" --vfs-cache-mode full --vfs-cache-max-size 100M --vfs-read-chunk-size 50M --vfs-read-wait 10s --vfs-write-wait 10s --transfers 100
 EOF
